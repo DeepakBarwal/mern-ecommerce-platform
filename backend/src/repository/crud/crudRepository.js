@@ -7,7 +7,7 @@ class CrudRepository {
     try {
       return await this.model.create(data);
     } catch (error) {
-      console.error("Error at CRUD Repo layer");
+      console.error(`Error at CRUD Repo layer: ${error}`);
       throw error;
     }
   }
@@ -16,7 +16,7 @@ class CrudRepository {
     try {
       return await this.model.find({});
     } catch (error) {
-      console.error("Error at CRUD Repo layer");
+      console.error(`Error at CRUD Repo layer: ${error}`);
       throw error;
     }
   }
@@ -25,7 +25,7 @@ class CrudRepository {
     try {
       return await this.model.findById(id);
     } catch (error) {
-      console.error("Error at CRUD Repo layer");
+      console.error(`Error at CRUD Repo layer: ${error}`);
       throw error;
     }
   }
@@ -34,7 +34,7 @@ class CrudRepository {
     try {
       return await this.model.findByIdAndUpdate(id, data);
     } catch (error) {
-      console.error("Error at CRUD Repo layer");
+      console.error(`Error at CRUD Repo layer: ${error}`);
       throw error;
     }
   }
@@ -43,7 +43,7 @@ class CrudRepository {
     try {
       return await this.model.findByIdAndDelete(id);
     } catch (error) {
-      console.error("Error at CRUD Repo layer");
+      console.error(`Error at CRUD Repo layer: ${error}`);
       throw error;
     }
   }
