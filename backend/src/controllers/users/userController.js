@@ -1,6 +1,5 @@
 import { UserService } from "../../services/index.js";
 import asyncHandler from "../../middleware/asyncHandler.js";
-import { NODE_ENV } from "../../config/serverConfig.js";
 
 const userService = new UserService();
 
@@ -11,15 +10,7 @@ const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await userService.getUserByEmail(email);
   if (user && (await user.matchPassword(password))) {
-    const token = userService.generateToken(user);
-
-    // Set jwt token as http-only cookie
-    res.cookie("jwt", token, {
-      httpOnly: true,
-      secure: NODE_ENV !== "development",
-      sameSite: "strict",
-      maxAge: 60 * 60 * 1000, // 1h
-    });
+    userService.generateTokenAndSetCookie(user._id, res);
 
     return res.json({
       status: "success",
@@ -40,7 +31,34 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /users/register
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  res.send("register user");
+  const { name, email, password } = req.body;
+
+  const userExists = await userService.getUserByEmail(email);
+
+  if (userExists) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
+
+  const user = await userService.create({
+    name,
+    email,
+    password,
+  });
+
+  if (user) {
+    res.status(201).json({
+      status: "success",
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      },
+    });
+  } else {
+    throw new Error("Invalid user data");
+  }
 });
 
 // @desc    Logout user / clear cookie

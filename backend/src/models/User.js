@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+import { SALT_ROUNDS } from "../config/serverConfig.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -31,6 +32,15 @@ const userSchema = new mongoose.Schema(
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+
+  const salt = await bcrypt.genSalt(parseInt(SALT_ROUNDS));
+  this.password = await bcrypt.hash(this.password, salt);
+});
 
 const User = mongoose.model("user", userSchema);
 

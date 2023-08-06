@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { CrudRepository } from "../../repository/index.js";
 import User from "../../models/User.js";
-import { JWT_SECRET } from "../../config/serverConfig.js";
+import { JWT_SECRET, NODE_ENV } from "../../config/serverConfig.js";
 
 class UserService extends CrudRepository {
   constructor() {
@@ -18,9 +18,16 @@ class UserService extends CrudRepository {
     }
   }
 
-  generateToken(user) {
-    const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
+  generateTokenAndSetCookie(userId, res) {
+    const token = jwt.sign({ userId }, JWT_SECRET, {
       expiresIn: "1h",
+    });
+    // Set jwt token as http-only cookie
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: NODE_ENV !== "development",
+      sameSite: "strict",
+      maxAge: 60 * 60 * 1000, // 1h
     });
     return token;
   }
