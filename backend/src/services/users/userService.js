@@ -41,6 +41,26 @@ class UserService extends CrudRepository {
       throw error;
     }
   }
+
+  async updateUserProfile(id, data) {
+    try {
+      const user = await User.findById(id);
+
+      if (user) {
+        user.name = data?.name || user.name;
+        user.email = data?.email || user.email;
+        if (data?.password) {
+          user.password = data?.password;
+        }
+        const updateUser = await user.save();
+        return updateUser;
+      }
+      return false;
+    } catch (error) {
+      console.error(`Error at User Service layer: ${error}`);
+      throw error;
+    }
+  }
 }
 
 export default UserService;

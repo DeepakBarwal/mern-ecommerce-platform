@@ -12,7 +12,7 @@ const authUser = asyncHandler(async (req, res) => {
   if (user && (await user.matchPassword(password))) {
     userService.generateTokenAndSetCookie(user._id, res);
 
-    return res.json({
+    return res.status(200).json({
       status: "success",
       data: {
         _id: user._id,
@@ -80,14 +80,44 @@ const logoutUser = asyncHandler(async (req, res) => {
 // @route   GET /users/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  res.send("get user profile");
+  const user = await userService.get(req.user._id);
+  if (user) {
+    return res.status(200).json({
+      status: "success",
+      data: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+      },
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
 });
 
 // @desc    Update user profile
 // @route   PUT /users/profile
 // @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  res.send("update user profile");
+  const updatedUser = await userService.updateUserProfile(
+    req.user?._id,
+    req.body
+  );
+  if (!updatedUser) {
+    res.status(404);
+    throw new Error("No user found");
+  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    },
+  });
 });
 
 // @desc    Get users

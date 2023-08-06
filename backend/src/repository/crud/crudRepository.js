@@ -32,7 +32,7 @@ class CrudRepository {
 
   async update(id, data) {
     try {
-      return await this.model.findByIdAndUpdate(id, data);
+      return await this.model.findByIdAndUpdate(id, data, { new: true });
     } catch (error) {
       console.error(`Error at CRUD Repo layer: ${error}`);
       throw error;
