@@ -8,7 +8,7 @@ const userService = new UserService();
 // @access  Public
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const user = await userService.getUserByEmail(email);
+  const user = await userService.getUserByEmail(email.toLowerCase());
   if (user && (await user.matchPassword(password))) {
     userService.generateTokenAndSetCookie(user._id, res);
 
@@ -33,7 +33,7 @@ const authUser = asyncHandler(async (req, res) => {
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
-  const userExists = await userService.getUserByEmail(email);
+  const userExists = await userService.getUserByEmail(email.toLowerCase());
 
   if (userExists) {
     res.status(400);
