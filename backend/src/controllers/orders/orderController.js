@@ -72,14 +72,27 @@ export const getOrderById = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update order to paid
-// @route   GET /orders/:id/pay
+// @route   PUT /orders/:id/pay
 // @access  Private
 export const updateOrderToPaid = asyncHandler(async (req, res) => {
-  res.json("update order to paid");
+  const order = await orderService.get(req.params.id);
+  if (order) {
+    const updatedOrder = await orderService.updateOrderToPaid(
+      req.params.id,
+      req.body
+    );
+    res.status(200).json({
+      status: "success",
+      data: updatedOrder,
+    });
+  } else {
+    res.status(404);
+    throw new Error("Order not found");
+  }
 });
 
 // @desc    Update order to delivered
-// @route   GET /orders/:id/delivered
+// @route   PUT /orders/:id/delivered
 // @access  Private/Admin
 export const updateOrderToDelivered = asyncHandler(async (req, res) => {
   res.json("update order to Delivered");
