@@ -29,6 +29,16 @@ class OrderService extends CrudRepository {
     }
   }
 
+  async getAllOrdersAndPopulate() {
+    try {
+      const orders = await Order.find({}).populate("user", "id name");
+      return orders;
+    } catch (error) {
+      console.error(`Error at Order Service layer: ${error}`);
+      throw error;
+    }
+  }
+
   async updateOrderToPaid(orderId, reqBody) {
     try {
       const order = await Order.findById(orderId);
