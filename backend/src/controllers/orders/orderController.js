@@ -95,7 +95,19 @@ export const updateOrderToPaid = asyncHandler(async (req, res) => {
 // @route   PUT /orders/:id/delivered
 // @access  Private/Admin
 export const updateOrderToDelivered = asyncHandler(async (req, res) => {
-  res.json("update order to Delivered");
+  const order = await orderService.get(req.params.id);
+  if (order) {
+    const updatedOrder = await orderService.updateOrderToDelivered(
+      req.params.id
+    );
+    res.status(200).json({
+      status: "success",
+      data: updatedOrder,
+    });
+  } else {
+    res.status(404);
+    throw new Error("Order not found");
+  }
 });
 
 // @desc    Get all orders

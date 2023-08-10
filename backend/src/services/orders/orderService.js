@@ -58,6 +58,20 @@ class OrderService extends CrudRepository {
       throw error;
     }
   }
+
+  async updateOrderToDelivered(orderId) {
+    try {
+      const order = await Order.findById(orderId);
+      order.isDelivered = true;
+      order.deliveredAt = Date.now();
+
+      const updatedOrder = await order.save();
+      return updatedOrder;
+    } catch (error) {
+      console.error(`Error at Order Service layer: ${error}`);
+      throw error;
+    }
+  }
 }
 
 export default OrderService;
