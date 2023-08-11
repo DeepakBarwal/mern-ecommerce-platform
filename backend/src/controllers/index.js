@@ -1,6 +1,7 @@
 import {
   getAllProducts,
   getProductById,
+  createProduct,
 } from "./products/productController.js";
 
-export { getAllProducts, getProductById };
+export { getAllProducts, getProductById, createProduct };
