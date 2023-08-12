@@ -3,6 +3,7 @@ import productsRouter from "./products/productRoutes.js";
 import usersRouter from "./users/userRoutes.js";
 import ordersRouter from "./orders/orderRoutes.js";
 import { PAYPAL_CLIENT_ID } from "../../config/serverConfig.js";
+import uploadRouter from "./uploads/uploadRoutes.js";
 
 const router = express.Router();
 
@@ -12,5 +13,6 @@ router.use("/users", usersRouter);
 router.use("/config/paypal", (req, res) =>
   res.send({ clientId: PAYPAL_CLIENT_ID })
 );
+router.use("/uploads", uploadRouter);
 
 export default router;

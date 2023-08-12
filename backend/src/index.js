@@ -1,3 +1,4 @@
+import path from "path";
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
@@ -19,6 +20,12 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api", apiV1Routes);
+
+const __dirname = path.resolve();
+app.use(
+  "/api/v1/src/uploads",
+  express.static(path.join(__dirname, "/src/uploads"))
+);
 
 // Error Handler
 app.use(notFound);
