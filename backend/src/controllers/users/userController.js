@@ -124,28 +124,74 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // @route   GET /users
 // @access  Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  res.send("get users");
+  const users = await userService.getAll();
+  res.status(200).json({
+    status: "success",
+    data: users,
+  });
 });
 
 // @desc    Get user by id
 // @route   GET /users/:id
 // @access  Private/Admin
 const getUserById = asyncHandler(async (req, res) => {
-  res.send("get user by id");
+  const user = await userService.getUserWithoutPassword(req.params.id);
+  if (user) {
+    res.status(200).json({
+      status: "success",
+      data: user,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
 });
 
 // @desc    Delete users
 // @route   DELETE /users/:id
 // @access  Private/Admin
 const deleteUser = asyncHandler(async (req, res) => {
-  res.send("delete users");
+  const user = await userService.getUserWithoutPassword(req.params.id);
+  if (user) {
+    if (user.isAdmin) {
+      res.status(400);
+      throw new Error("Cannot delete admin");
+    }
+    await userService.delete(req.params.id);
+    res.status(200).json({
+      status: "success",
+      data: null,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
 });
 
 // @desc    Update users
 // @route   PUT /users/:id
 // @access  Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
-  res.send("update users");
+  const user = await userService.getUserWithoutPassword(req.params.id);
+  if (user) {
+    const updatedUser = await userService.update(req.params.id, {
+      name: req.body.name || user.name,
+      email: req.body.email || user.email,
+      isAdmin: Boolean(req.body.isAdmin),
+    });
+    res.status(200).json({
+      status: "success",
+      data: {
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+      },
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
 });
 
 export {
