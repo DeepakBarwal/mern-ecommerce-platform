@@ -43,6 +43,20 @@ export const createProduct = asyncHandler(async (req, res) => {
   res.status(201).json({ status: "success", data: product });
 });
 
+// @desc    Delete a Product
+// @route   DELETE /products/:id
+// @access  Private/Admin
+export const deleteProduct = asyncHandler(async (req, res) => {
+  const product = await productService.get(req.params.id);
+  if (product) {
+    await productService.delete(req.params.id);
+  } else {
+    res.status(404);
+    throw new Error("Product Not Found");
+  }
+  res.status(200).json({ status: "success", data: null });
+});
+
 // @desc    Update a Product
 // @route   PUT /products/:id
 // @access  Private/Admin

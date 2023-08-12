@@ -3,6 +3,13 @@ import {
   getProductById,
   createProduct,
   updateProduct,
+  deleteProduct,
 } from "./products/productController.js";
 
-export { getAllProducts, getProductById, createProduct, updateProduct };
+export {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+};
