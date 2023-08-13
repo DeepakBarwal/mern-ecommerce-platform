@@ -1,11 +1,17 @@
-import { useGetProductsQuery } from "../store/slices/productsApiSlice";
+import { useParams } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import Paginate from "../components/Paginate";
+import { useGetProductsQuery } from "../store/slices/productsApiSlice";
 
 const HomeScreen = () => {
-  const { data, isLoading, error } = useGetProductsQuery();
+  const { pageNumber } = useParams();
+
+  const { data, isLoading, error } = useGetProductsQuery({
+    pageNumber,
+  });
 
   const products = data?.data;
 
@@ -27,6 +33,7 @@ const HomeScreen = () => {
               </Col>
             ))}
           </Row>
+          <Paginate pages={data?.pages} page={data?.page} />
         </>
       )}
     </>

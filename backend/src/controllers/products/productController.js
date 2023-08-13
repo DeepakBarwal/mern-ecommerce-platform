@@ -7,8 +7,17 @@ const productService = new ProductService();
 // @route   GET /products
 // @access  Public
 export const getAllProducts = asyncHandler(async (req, res) => {
-  const products = await productService.getAll();
-  res.status(200).json({ status: "success", data: products });
+  const pageSize = 10;
+  const page = Number(req.query.pageNumber) || 1;
+  const count = await productService.getTotalProducts();
+
+  const products = await productService.getPaginatedProducts(pageSize, page);
+  res.status(200).json({
+    status: "success",
+    data: products,
+    page,
+    pages: Math.ceil(count / pageSize),
+  });
 });
 
 // @desc    Fetch a Product
