@@ -1,4 +1,4 @@
-const domainList = ["https://mern-ecommerce-tb5w.onrender.com"];
+const domainList = ["https://mern-ecommerce-frontend-2kz3.onrender.com/"];
 export const corsOptions = {
   origin: function (origin, callback) {
     if (domainList.indexOf(origin) !== -1) {
