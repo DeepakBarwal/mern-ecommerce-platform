@@ -4,7 +4,7 @@ import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { PORT } from "./config/serverConfig.js";
-// import { corsOptions } from "./config/corsConfig.js";
+import { corsOptions } from "./config/corsConfig.js";
 import apiV1Routes from "./routes/index.js";
 import connectDB from "./config/db.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
@@ -13,7 +13,13 @@ const app = express();
 
 // Middlewares
 app.use(helmet());
-app.use(cors());
+app.use(
+  cors({
+    ...corsOptions,
+    credentials: true,
+  })
+);
+app.set("trust proxy", 1);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

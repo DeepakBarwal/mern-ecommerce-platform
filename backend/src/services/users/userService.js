@@ -25,8 +25,8 @@ class UserService extends CrudRepository {
     // Set jwt token as http-only cookie
     res.cookie("jwt", token, {
       httpOnly: true,
-      secure: NODE_ENV !== "development",
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
       maxAge: 60 * 60 * 1000, // 1h
     });
     return token;

@@ -1,4 +1,4 @@
-const domainList = ["http://localhost:3000"];
+const domainList = ["https://mern-ecommerce-tb5w.onrender.com"];
 export const corsOptions = {
   origin: function (origin, callback) {
     if (domainList.indexOf(origin) !== -1) {
