@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:4000/api/v1",
+  "proxy": "https://mern-ecommerce-tb5w.onrender.com/api/v1",
   "dependencies": {
     "@paypal/react-paypal-js": "^8.1.1",
     "@reduxjs/toolkit": "^1.9.5",
