@@ -1,5 +1,6 @@
 import asyncHandler from "../../middleware/asyncHandler.js";
 import { ProductService } from "../../services/index.js";
+import { PAGINATION_LIMIT } from "../../config/serverConfig.js";
 
 const productService = new ProductService();
 
@@ -7,7 +8,7 @@ const productService = new ProductService();
 // @route   GET /products
 // @access  Public
 export const getAllProducts = asyncHandler(async (req, res) => {
-  const pageSize = 8;
+  const pageSize = PAGINATION_LIMIT;
   const page = Number(req.query.pageNumber) || 1;
 
   const keyword = req.query?.keyword
