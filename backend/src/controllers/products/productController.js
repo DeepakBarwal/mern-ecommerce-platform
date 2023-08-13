@@ -86,3 +86,34 @@ export const updateProduct = asyncHandler(async (req, res) => {
   }
   res.status(200).json({ status: "success", data: updatedProduct });
 });
+
+// @desc    Create a new review
+// @route   POST /products/:id/reviews
+// @access  Private
+export const createProductReview = asyncHandler(async (req, res) => {
+  const { rating, comment } = req.body;
+  const product = await productService.get(req.params.id);
+  if (product) {
+    const alreadyReviewed = productService.alreadyReviewed(
+      req.user._id,
+      product
+    );
+    if (alreadyReviewed) {
+      res.status(400);
+      throw new Error("Product already reviewed");
+    }
+    const reviewedProduct = await productService.createReview(req.params.id, {
+      name: req.user.name,
+      rating: Number(rating),
+      comment,
+      user: req.user._id,
+    });
+    res.status(201).json({
+      status: "success",
+      data: reviewedProduct,
+    });
+  } else {
+    res.status(404);
+    throw new Error("Product Not Found");
+  }
+});

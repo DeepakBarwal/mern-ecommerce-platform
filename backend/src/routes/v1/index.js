@@ -3,7 +3,7 @@ import productsRouter from "./products/productRoutes.js";
 import usersRouter from "./users/userRoutes.js";
 import ordersRouter from "./orders/orderRoutes.js";
 import { PAYPAL_CLIENT_ID } from "../../config/serverConfig.js";
-import uploadRouter from "./uploads/uploadRoutes.js";
+import uploadRouter from "./uploadRoutes.js";
 
 const router = express.Router();
 

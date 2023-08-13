@@ -4,6 +4,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  createProductReview,
 } from "./products/productController.js";
 
 export {
@@ -12,4 +13,5 @@ export {
   createProduct,
   updateProduct,
   deleteProduct,
+  createProductReview,
 };
