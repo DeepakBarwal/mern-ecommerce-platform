@@ -7,11 +7,19 @@ const productService = new ProductService();
 // @route   GET /products
 // @access  Public
 export const getAllProducts = asyncHandler(async (req, res) => {
-  const pageSize = 10;
+  const pageSize = 8;
   const page = Number(req.query.pageNumber) || 1;
-  const count = await productService.getTotalProducts();
 
-  const products = await productService.getPaginatedProducts(pageSize, page);
+  const keyword = req.query?.keyword
+    ? { name: { $regex: req.query.keyword, $options: "i" } }
+    : {};
+  const count = await productService.getTotalProducts(keyword);
+
+  const products = await productService.getPaginatedProducts(
+    pageSize,
+    page,
+    keyword
+  );
   res.status(200).json({
     status: "success",
     data: products,

@@ -28,18 +28,18 @@ class ProductService extends CrudRepository {
     }
   }
 
-  async getTotalProducts() {
+  async getTotalProducts(keyword) {
     try {
-      return await Product.countDocuments();
+      return await Product.countDocuments({ ...keyword });
     } catch (error) {
       console.error(`Error at Product Service layer: ${error}`);
       throw error;
     }
   }
 
-  async getPaginatedProducts(pageSize, page) {
+  async getPaginatedProducts(pageSize, page, keyword) {
     try {
-      const products = await Product.find({})
+      const products = await Product.find({ ...keyword })
         .limit(pageSize)
         .skip(pageSize * (page - 1));
       return products;
