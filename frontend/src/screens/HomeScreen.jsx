@@ -4,6 +4,7 @@ import Product from "../components/Product";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Paginate from "../components/Paginate";
+import ProductCarousel from "../components/ProductCarousel";
 import { useGetProductsQuery } from "../store/slices/productsApiSlice";
 
 const HomeScreen = () => {
@@ -18,7 +19,9 @@ const HomeScreen = () => {
 
   return (
     <>
-      {keyword && (
+      {!keyword ? (
+        <ProductCarousel />
+      ) : (
         <Link to="/" className="btn btn-light my-4">
           Go Back
         </Link>

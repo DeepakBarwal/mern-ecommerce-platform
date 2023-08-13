@@ -134,3 +134,12 @@ export const createProductReview = asyncHandler(async (req, res) => {
     throw new Error("Product Not Found");
   }
 });
+
+// @desc    Get top rated products
+// @route   GET /products/top
+// @access  Public
+export const getTopProducts = asyncHandler(async (req, res) => {
+  const products = await productService.getTopProducts();
+
+  res.status(200).json({ status: "success", data: products });
+});

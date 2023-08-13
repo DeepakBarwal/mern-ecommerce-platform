@@ -48,6 +48,16 @@ class ProductService extends CrudRepository {
       throw error;
     }
   }
+
+  async getTopProducts() {
+    try {
+      const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+      return products;
+    } catch (error) {
+      console.error(`Error at Product Service layer: ${error}`);
+      throw error;
+    }
+  }
 }
 
 export default ProductService;
