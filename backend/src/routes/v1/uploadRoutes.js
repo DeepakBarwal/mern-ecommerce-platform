@@ -4,9 +4,11 @@ import multer from "multer";
 
 const router = express.Router();
 
+const __dirname = path.resolve();
+
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, "src/uploads/");
+    cb(null, path.join(__dirname, "/uploads"));
   },
   filename(req, file, cb) {
     cb(
@@ -40,7 +42,7 @@ router.post("/", (req, res) => {
     }
     res.status(200).send({
       message: "Image uploaded successfully",
-      image: `/${req.file?.path}`,
+      image: `/uploads${req.file?.path.split("uploads")[1]}`,
     });
   });
 });

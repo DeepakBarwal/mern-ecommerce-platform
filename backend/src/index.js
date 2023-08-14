@@ -22,14 +22,13 @@ app.use(cookieParser());
 app.use("/api", apiV1Routes);
 
 const __dirname = path.resolve();
-app.use("/src/uploads", express.static(path.join(__dirname, "/uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 if (NODE_ENV === "production") {
   // set static folder
   app.use(express.static(path.join(__dirname, "/frontend/build")));
 
   // any route that's not api will be redirected to index.html
-  console.log(path.resolve(__dirname, "frontend", "build", "index.html"));
   app.get("*", (req, res) =>
     res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
   );
