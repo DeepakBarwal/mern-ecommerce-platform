@@ -22,7 +22,7 @@ app.use(cookieParser());
 app.use("/api", apiV1Routes);
 
 const __dirname = path.resolve();
-app.use("/src/uploads", express.static(path.join(__dirname, "/src/uploads")));
+app.use("/src/uploads", express.static(path.join(__dirname, "/uploads")));
 
 if (NODE_ENV === "production") {
   // set static folder
